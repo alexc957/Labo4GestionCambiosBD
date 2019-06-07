@@ -1,0 +1,92 @@
+USE [PedidosPrueba]
+GO
+INSERT [catalogo].[Ciudad] ([codciu], [nombre]) VALUES (N'CI1', N'Quito')
+GO
+INSERT [catalogo].[Ciudad] ([codciu], [nombre]) VALUES (N'CI2', N'Guayaquil')
+GO
+INSERT [catalogo].[Ciudad] ([codciu], [nombre]) VALUES (N'CI3', N'Cuenca')
+GO
+INSERT [catalogo].[Ciudad] ([codciu], [nombre]) VALUES (N'CI4', N'Loja')
+GO
+INSERT [catalogo].[Cliente] ([codcli], [codciu], [garante], [direnvio], [credito], [descuento]) VALUES (N'C01', N'CI1', N'C01', N'NNUU y 10 de Agosto', CAST(1500.00 AS Numeric(7, 2)), CAST(10.00 AS Numeric(5, 2)))
+GO
+INSERT [catalogo].[Cliente] ([codcli], [codciu], [garante], [direnvio], [credito], [descuento]) VALUES (N'C02', N'CI1', N'C01', N'Riofrio y Bolivia', CAST(1200.00 AS Numeric(7, 2)), CAST(10.00 AS Numeric(5, 2)))
+GO
+INSERT [catalogo].[Cliente] ([codcli], [codciu], [garante], [direnvio], [credito], [descuento]) VALUES (N'C03', N'CI2', N'C02', N'Malecon 1050', CAST(1000.00 AS Numeric(7, 2)), CAST(5.00 AS Numeric(5, 2)))
+GO
+INSERT [catalogo].[Cliente] ([codcli], [codciu], [garante], [direnvio], [credito], [descuento]) VALUES (N'C04', N'CI2', N'C02', N'Libertadores y Ayacucho', CAST(500.00 AS Numeric(7, 2)), CAST(3.00 AS Numeric(5, 2)))
+GO
+INSERT [catalogo].[Cliente] ([codcli], [codciu], [garante], [direnvio], [credito], [descuento]) VALUES (N'C05', N'CI3', N'C04', N'Julio Moreno 231', CAST(900.00 AS Numeric(7, 2)), CAST(4.00 AS Numeric(5, 2)))
+GO
+INSERT [catalogo].[Cliente] ([codcli], [codciu], [garante], [direnvio], [credito], [descuento]) VALUES (N'C06', N'CI3', N'C04', N'La 15 y Marin', CAST(1800.00 AS Numeric(7, 2)), CAST(15.00 AS Numeric(5, 2)))
+GO
+INSERT [catalogo].[Cliente] ([codcli], [codciu], [garante], [direnvio], [credito], [descuento]) VALUES (N'C07', N'CI4', N'C05', N'Direnvio1 y Estadio', CAST(1000.00 AS Numeric(7, 2)), CAST(10.00 AS Numeric(5, 2)))
+GO
+INSERT [catalogo].[Producto] ([codpro], [nomprod], [preunit], [stock]) VALUES (N'P01', N'Producto1', CAST(10.20 AS Numeric(7, 2)), 100)
+GO
+INSERT [catalogo].[Producto] ([codpro], [nomprod], [preunit], [stock]) VALUES (N'P02', N'Producto2', CAST(3.00 AS Numeric(7, 2)), 50)
+GO
+INSERT [catalogo].[Producto] ([codpro], [nomprod], [preunit], [stock]) VALUES (N'P03', N'Producto3', CAST(5.00 AS Numeric(7, 2)), 70)
+GO
+INSERT [catalogo].[Producto] ([codpro], [nomprod], [preunit], [stock]) VALUES (N'P04', N'Producto4', CAST(1.00 AS Numeric(7, 2)), 200)
+GO
+INSERT [catalogo].[Producto] ([codpro], [nomprod], [preunit], [stock]) VALUES (N'P05', N'Producto5', CAST(150.00 AS Numeric(7, 2)), 10)
+GO
+INSERT [catalogo].[Producto] ([codpro], [nomprod], [preunit], [stock]) VALUES (N'P06', N'Producto6', CAST(550.00 AS Numeric(7, 2)), 60)
+GO
+INSERT [catalogo].[Proveedor] ([codprov], [nomprov]) VALUES (N'PR1', N'Proveedor1')
+GO
+INSERT [catalogo].[Proveedor] ([codprov], [nomprov]) VALUES (N'PR2', N'Proveedor2')
+GO
+INSERT [catalogo].[Proveedor] ([codprov], [nomprov]) VALUES (N'PR3', N'Proveedor3')
+GO
+INSERT [catalogo].[Proveedor] ([codprov], [nomprov]) VALUES (N'PR4', N'Proveedor4')
+GO
+INSERT [catalogo].[Telprov] ([numtelf], [codprov]) VALUES (N'023245678 ', N'PR1')
+GO
+INSERT [catalogo].[Telprov] ([numtelf], [codprov]) VALUES (N'043223455 ', N'PR4')
+GO
+INSERT [catalogo].[Telprov] ([numtelf], [codprov]) VALUES (N'043456777 ', N'PR4')
+GO
+INSERT [catalogo].[Telprov] ([numtelf], [codprov]) VALUES (N'069847636 ', N'PR3')
+GO
+INSERT [catalogo].[Telprov] ([numtelf], [codprov]) VALUES (N'086584733 ', N'PR2')
+GO
+INSERT [catalogo].[Telprov] ([numtelf], [codprov]) VALUES (N'098001001 ', N'PR2')
+GO
+INSERT [catalogo].[Telprov] ([numtelf], [codprov]) VALUES (N'099321453 ', N'PR1')
+GO
+INSERT [movimiento].[CabezeraP] ([codped], [fecha], [montototal], [codcli]) VALUES (N'R01', CAST(0x0000A86E00000000 AS DateTime), NULL, N'C01')
+GO
+INSERT [movimiento].[CabezeraP] ([codped], [fecha], [montototal], [codcli]) VALUES (N'R02', CAST(0x0000A88800000000 AS DateTime), NULL, N'C02')
+GO
+INSERT [movimiento].[CabezeraP] ([codped], [fecha], [montototal], [codcli]) VALUES (N'R03', CAST(0x0000A89F00000000 AS DateTime), NULL, N'C03')
+GO
+INSERT [movimiento].[CabezeraP] ([codped], [fecha], [montototal], [codcli]) VALUES (N'R04', CAST(0x0000A89D00000000 AS DateTime), NULL, N'C04')
+GO
+INSERT [movimiento].[DetalleP] ([numlinea], [preciou], [cantidad], [codped], [codpro]) VALUES (1, CAST(2.00 AS Numeric(7, 2)), 2, N'R01', N'P01')
+GO
+INSERT [movimiento].[DetalleP] ([numlinea], [preciou], [cantidad], [codped], [codpro]) VALUES (1, CAST(30.00 AS Numeric(7, 2)), 5, N'R02', N'P06')
+GO
+INSERT [movimiento].[DetalleP] ([numlinea], [preciou], [cantidad], [codped], [codpro]) VALUES (1, CAST(20.60 AS Numeric(7, 2)), 4, N'R03', N'P05')
+GO
+INSERT [movimiento].[DetalleP] ([numlinea], [preciou], [cantidad], [codped], [codpro]) VALUES (1, CAST(10.00 AS Numeric(7, 2)), 6, N'R04', N'P01')
+GO
+INSERT [movimiento].[DetalleP] ([numlinea], [preciou], [cantidad], [codped], [codpro]) VALUES (2, CAST(5.50 AS Numeric(7, 2)), 10, N'R01', N'P02')
+GO
+INSERT [movimiento].[DetalleP] ([numlinea], [preciou], [cantidad], [codped], [codpro]) VALUES (2, CAST(150.00 AS Numeric(7, 2)), 3, N'R04', N'P03')
+GO
+INSERT [movimiento].[Provee] ([codprov], [codpro], [cantidad]) VALUES (N'PR1', N'P01', 1000)
+GO
+INSERT [movimiento].[Provee] ([codprov], [codpro], [cantidad]) VALUES (N'PR1', N'P02', 500)
+GO
+INSERT [movimiento].[Provee] ([codprov], [codpro], [cantidad]) VALUES (N'PR2', N'P02', 100)
+GO
+INSERT [movimiento].[Provee] ([codprov], [codpro], [cantidad]) VALUES (N'PR2', N'P03', 100)
+GO
+INSERT [movimiento].[Provee] ([codprov], [codpro], [cantidad]) VALUES (N'PR3', N'P04', 200)
+GO
+INSERT [movimiento].[Provee] ([codprov], [codpro], [cantidad]) VALUES (N'PR4', N'P03', 50)
+GO
+INSERT [movimiento].[Provee] ([codprov], [codpro], [cantidad]) VALUES (N'PR4', N'P04', 10)
+GO

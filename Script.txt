@@ -1,0 +1,97 @@
+---Cambio en la longitud de la primary key
+
+--Incrementar el trigger en un 10% 
+ALTER TABLE [catalogo].[Cliente]  drop CONSTRAINT [CK_credito];
+ALTER TABLE [catalogo].[Cliente]  WITH CHECK add CONSTRAINT [CK_credito] CHECK  (([credito]<=(2200)))
+
+--Longitud de la primary key
+
+--Eliminar Relaciones de la Tabla
+
+alter table catalogo.cliente drop constraint debetener
+alter table movimiento.cabezeraP drop constraint Solicita
+alter table catalogo.cliente drop constraint PK_Cliente
+
+--Alterar la columna
+ALTER TABLE [catalogo].[Cliente] alter column codcli CHAR(6) not null;
+alter table movimiento.cabezeraP alter column codcli char(6);
+alter table catalogo.cliente alter column garante char(6)
+
+--Alterar los registros de la tabla
+
+
+create table #tmp(
+cod_cliente varchar(3),
+nuevo_cod varchar(7))
+
+insert into #tmp
+select garante, CONCAT( SUBSTRING(garante, 1, 1), '0000', SUBSTRING(garante, 3,3))
+from catalogo.CLIENTE
+
+UPDATE
+    Table_A
+SET
+    Table_A.codcli = Table_B.nuevo_cod
+FROM
+    catalogo.CLIENTE as Table_A
+    INNER JOIN #tmp AS Table_B
+        ON Table_A.codcli = Table_B.cod_cliente
+UPDATE
+    Table_A
+SET
+    Table_A.garante = Table_B.nuevo_cod
+FROM
+    catalogo.CLIENTE as Table_A
+    INNER JOIN #tmp AS Table_B
+        ON Table_A.garante = Table_B.cod_cliente
+UPDATE
+    Table_C
+SET
+    Table_C.codcli = Table_B.nuevo_cod
+FROM
+	movimiento.CABEZERAP as Table_C
+    INNER JOIN #tmp AS Table_B
+        ON Table_C.codcli = Table_B.cod_cliente
+
+--Añadir las relaciones de tabla
+ALTER TABLE [catalogo].[Cliente] ADD CONSTRAINT [PK_Cliente] PRIMARY KEY ([codcli])
+ALTER TABLE [movimiento].[CabezeraP] ADD CONSTRAINT [Solicita] FOREIGN KEY ([codcli]) REFERENCES [catalogo].[Cliente] ([codcli]) ON UPDATE NO ACTION ON DELETE NO ACTION
+ALTER TABLE [catalogo].[Cliente] ADD CONSTRAINT [debetener] FOREIGN KEY ([garante]) REFERENCES [catalogo].[Cliente] ([codcli]) ON UPDATE NO ACTION ON DELETE NO ACTION NOT FOR REPLICATION
+
+
+--Longitud de la primary key CabezeraP
+
+--Eliminar Relaciones de la Tabla
+
+alter table movimiento.detalleP
+drop constraint Tiene
+alter table movimiento.detalleP
+drop constraint PK_DetalleP
+alter table movimiento.cabezeraP
+drop constraint PK_CabezeraP
+
+--Alterar la columna
+alter table movimiento.detalleP
+alter column codped varchar(10) NOT NULL
+alter table movimiento.cabezeraP
+alter column codped varchar(10) NOT NULL
+--FUNCION DE CAMBIOS
+CREATE FUNCTION dbo.change_key
+(@strAlphaNumeric CHAR(3))
+RETURNS CHAR(2)
+AS
+BEGIN
+DECLARE @intAlpha INT
+SET @intAlpha = PATINDEX('%[^1-9]%', @strAlphaNumeric)
+BEGIN
+WHILE @intAlpha > 0
+BEGIN
+	SET @strAlphaNumeric = STUFF(@strAlphaNumeric, @intAlpha, 1, '' );
+	SET @intAlpha = PATINDEX('%[^1-9]%', @strAlphaNumeric );			
+END
+END
+RETURN ISNULL(@strAlphaNumeric,0)
+END
+GO
+
+
