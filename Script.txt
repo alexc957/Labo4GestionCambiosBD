@@ -25,7 +25,7 @@ cod_cliente varchar(3),
 nuevo_cod varchar(7))
 
 insert into #tmp
-select garante, CONCAT( SUBSTRING(garante, 1, 1), '0000', SUBSTRING(garante, 3,3))
+select codcli, CONCAT( 'PE', '000000',STUFF(codcli, PATINDEX('%[^0-9]%', codcli ), 1, '' )) 
 from catalogo.CLIENTE
 
 UPDATE
@@ -75,23 +75,32 @@ alter table movimiento.detalleP
 alter column codped varchar(10) NOT NULL
 alter table movimiento.cabezeraP
 alter column codped varchar(10) NOT NULL
---FUNCION DE CAMBIOS
-CREATE FUNCTION dbo.change_key
-(@strAlphaNumeric CHAR(3))
-RETURNS CHAR(2)
-AS
-BEGIN
-DECLARE @intAlpha INT
-SET @intAlpha = PATINDEX('%[^1-9]%', @strAlphaNumeric)
-BEGIN
-WHILE @intAlpha > 0
-BEGIN
-	SET @strAlphaNumeric = STUFF(@strAlphaNumeric, @intAlpha, 1, '' );
-	SET @intAlpha = PATINDEX('%[^1-9]%', @strAlphaNumeric );			
-END
-END
-RETURN ISNULL(@strAlphaNumeric,0)
-END
-GO
+
+--- ------------------------------------Actualizar los valores de las claves primarias
+
+create table #tmp(
+codped varchar(3),
+nuevo_cod varchar(10))
+
+insert into #tmp
+select codped, CONCAT( 'PE', '000000',STUFF(codped, PATINDEX('%[^0-9]%', codped ), 1, '' )) from movimiento.CabezeraP
+
+UPDATE
+    Table_A
+SET
+    Table_A.codped= Table_B.nuevo_cod
+FROM
+    movimiento.CabezeraP as Table_A
+    INNER JOIN #tmp AS Table_B
+        ON Table_A.codped = Table_B.codped
+UPDATE
+    Table_A
+SET
+    Table_A.codped = Table_B.nuevo_cod
+FROM
+    movimiento.DetalleP as Table_A
+    INNER JOIN #tmp AS Table_B
+        ON Table_A.codped = Table_B.codped
+--------------------------------------------------Crear nuevamente las relaciones eliminadas--
 
 
