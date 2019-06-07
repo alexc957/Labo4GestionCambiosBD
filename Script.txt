@@ -102,5 +102,8 @@ FROM
     INNER JOIN #tmp AS Table_B
         ON Table_A.codped = Table_B.codped
 --------------------------------------------------Crear nuevamente las relaciones eliminadas--
+ALTER TABLE [movimiento].[CabezeraP] ADD CONSTRAINT [PK_CabezeraP] PRIMARY KEY ([codped])
+ALTER TABLE [movimiento].[DetalleP] ADD CONSTRAINT [PK_DetalleP] PRIMARY KEY ([codped],[numlinea])
+ALTER TABLE [movimiento].[DetalleP] ADD CONSTRAINT [Tiene] FOREIGN KEY ([codped]) REFERENCES [movimiento].[CabezeraP] ([codped]) ON UPDATE NO ACTION ON DELETE NO ACTION
 
 

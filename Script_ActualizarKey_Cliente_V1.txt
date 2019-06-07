@@ -1,0 +1,55 @@
+--Longitud de la primary key
+
+--Eliminar Relaciones de la Tabla
+
+alter table catalogo.cliente drop constraint debetener
+alter table movimiento.cabezeraP drop constraint Solicita
+alter table catalogo.cliente drop constraint PK_Cliente
+
+--Alterar la columna
+ALTER TABLE [catalogo].[Cliente] alter column codcli CHAR(6) not null;
+alter table movimiento.cabezeraP alter column codcli char(6);
+alter table catalogo.cliente alter column garante char(6)
+
+--Alterar los registros de la tabla
+
+
+create table #tmp(
+cod_cliente varchar(3),
+nuevo_cod varchar(7))
+
+insert into #tmp
+select codcli, CONCAT( 'PE', '000000',STUFF(codcli, PATINDEX('%[^0-9]%', codcli ), 1, '' )) 
+from catalogo.CLIENTE
+
+UPDATE
+    Table_A
+SET
+    Table_A.codcli = Table_B.nuevo_cod
+FROM
+    catalogo.CLIENTE as Table_A
+    INNER JOIN #tmp AS Table_B
+        ON Table_A.codcli = Table_B.cod_cliente
+UPDATE
+    Table_A
+SET
+    Table_A.garante = Table_B.nuevo_cod
+FROM
+    catalogo.CLIENTE as Table_A
+    INNER JOIN #tmp AS Table_B
+        ON Table_A.garante = Table_B.cod_cliente
+UPDATE
+    Table_C
+SET
+    Table_C.codcli = Table_B.nuevo_cod
+FROM
+	movimiento.CABEZERAP as Table_C
+    INNER JOIN #tmp AS Table_B
+        ON Table_C.codcli = Table_B.cod_cliente
+
+--Añadir las relaciones de tabla
+ALTER TABLE [catalogo].[Cliente] ADD CONSTRAINT [PK_Cliente] PRIMARY KEY ([codcli])
+ALTER TABLE [movimiento].[CabezeraP] ADD CONSTRAINT [Solicita] FOREIGN KEY ([codcli]) REFERENCES [catalogo].[Cliente] ([codcli]) ON UPDATE NO ACTION ON DELETE NO ACTION
+ALTER TABLE [catalogo].[Cliente] ADD CONSTRAINT [debetener] FOREIGN KEY ([garante]) REFERENCES [catalogo].[Cliente] ([codcli]) ON UPDATE NO ACTION ON DELETE NO ACTION NOT FOR REPLICATION
+
+

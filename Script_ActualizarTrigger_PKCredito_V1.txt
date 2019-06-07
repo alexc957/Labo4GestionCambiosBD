@@ -1,0 +1,6 @@
+---Cambio en la longitud de la primary key
+
+--Incrementar el trigger en un 10% 
+ALTER TABLE [catalogo].[Cliente]  drop CONSTRAINT [CK_credito];
+ALTER TABLE [catalogo].[Cliente]  WITH CHECK add CONSTRAINT [CK_credito] CHECK  (([credito]<=(2200)))
+
