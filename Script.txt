@@ -119,3 +119,8 @@ select Top 6 *
 into  #tmpDetalleP
 From  movimiento.DetalleP
 
+-----------------------------------------------------------------------insertar de otra tabla
+delete from catalogo.Cliente
+insert into catalogo.Cliente
+select * from #tmpCliente
+
