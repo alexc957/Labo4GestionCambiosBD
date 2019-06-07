@@ -2,9 +2,9 @@
 
 --Eliminar Relaciones de la Tabla
 
-alter table catalogo.cliente drop constraint debetener
 alter table movimiento.cabezeraP drop constraint Solicita
 alter table catalogo.cliente drop constraint PK_Cliente
+alter table catalogo.cliente drop constraint debetener
 
 --Alterar la columna
 ALTER TABLE [catalogo].[Cliente] alter column codcli CHAR(6) not null;
@@ -13,13 +13,12 @@ alter table catalogo.cliente alter column garante char(6)
 
 --Alterar los registros de la tabla
 
-
 create table #tmp(
 cod_cliente varchar(3),
-nuevo_cod varchar(7))
+nuevo_cod varchar(6))
 
 insert into #tmp
-select codcli, CONCAT( 'PE', '000000',STUFF(codcli, PATINDEX('%[^0-9]%', codcli ), 1, '' )) 
+select codcli, CONCAT( SUBSTRING(codcli, 1, 1), '000',STUFF(codcli, PATINDEX('%[^0-9]%', codcli ), 1, '' )) 
 from catalogo.CLIENTE
 
 UPDATE

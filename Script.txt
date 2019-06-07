@@ -107,3 +107,15 @@ ALTER TABLE [movimiento].[DetalleP] ADD CONSTRAINT [PK_DetalleP] PRIMARY KEY ([c
 ALTER TABLE [movimiento].[DetalleP] ADD CONSTRAINT [Tiene] FOREIGN KEY ([codped]) REFERENCES [movimiento].[CabezeraP] ([codped]) ON UPDATE NO ACTION ON DELETE NO ACTION
 
 
+
+----------------------------------------------------------------------Crear Tablas Temporales
+select Top 7 *
+into  #tmpCliente
+From  catalogo.Cliente
+select Top 4 *
+into  #tmpCabezeraP
+From  movimiento.CabezeraP
+select Top 6 *
+into  #tmpDetalleP
+From  movimiento.DetalleP
+
